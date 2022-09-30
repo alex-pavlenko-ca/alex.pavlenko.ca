@@ -5,39 +5,39 @@
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
-  <loc>http://alex.pavlenko.ca/</loc>
+  <loc>/</loc>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>http://alex.pavlenko.ca/works/paintings/</loc>
+  <loc>/works/paintings/</loc>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>http://alex.pavlenko.ca/works/sculptures/</loc>
+  <loc>/works/sculptures/</loc>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>http://alex.pavlenko.ca/works/drawings/</loc>
+  <loc>/works/drawings/</loc>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>http://alex.pavlenko.ca/works/murals/</loc>
+  <loc>/works/murals/</loc>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>http://alex.pavlenko.ca/studio-life-blog/</loc>
+  <loc>/studio-life-blog/</loc>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>http://alex.pavlenko.ca/biography/press-releases/</loc>
+  <loc>/biography/press-releases/</loc>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://alex.pavlenko.ca/biography/resume/</loc>
+  <loc>/biography/resume/</loc>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://alex.pavlenko.ca/contact/</loc>
+  <loc>/contact/</loc>
   <priority>0.80</priority>
 </url>
 </urlset>
