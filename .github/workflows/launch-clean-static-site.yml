@@ -1,0 +1,92 @@
+name: Launch clean static Alex Pavlenko site
+
+on:
+  push:
+    branches:
+      - deploy-clean-static-2026-08-17
+    paths:
+      - '.github/workflows/launch-clean-static-site.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  launch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout deployment control branch
+        uses: actions/checkout@v4
+        with:
+          path: control
+
+      - name: Checkout current live main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          path: site
+
+      - name: Verify live site has not moved
+        working-directory: site
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected='39ffb538802e9886b64f99e5f49599078b10dc13'
+          actual="$(git rev-parse HEAD)"
+          echo "Expected main: $expected"
+          echo "Current main:  $actual"
+          test "$actual" = "$expected"
+
+      - name: Reconstruct and verify clean-site payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat control/.deploy/chunk-* > /tmp/site-text.tar.gz.b64
+          echo 'c2e9001591714da4f6a587964e70235eae2aa13ac504b0113b79812c0507a236  /tmp/site-text.tar.gz.b64' | sha256sum -c -
+          base64 --decode /tmp/site-text.tar.gz.b64 > /tmp/site-text.tar.gz
+          echo 'c377ff590c2e17f1f89b99eb3799613b02c620133a7572816dde01205e221e72  /tmp/site-text.tar.gz' | sha256sum -c -
+          tar -tzf /tmp/site-text.tar.gz >/dev/null
+
+      - name: Replace WordPress export with clean static code
+        working-directory: site
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf wp-content wp-includes
+          rm -f browserconfig.xml mstile-150x150.png r-c-min.css
+          tar -xzf /tmp/site-text.tar.gz -C .
+
+      - name: Validate reconstructed website
+        working-directory: site
+        shell: bash
+        run: |
+          set -euo pipefail
+          count="$(find . -path './.git' -prune -o -type f -print | wc -l | tr -d ' ')"
+          echo "Static site file count: $count"
+          test "$count" = '221'
+          test -f index.html
+          test -f assets/css/site.css
+          test -f assets/js/site.js
+          test -f assets/js/theme-init.js
+          test -f CNAME
+          test ! -e wp-content
+          test ! -e wp-includes
+          test ! -e r-c-min.css
+          if grep -RniE 'wp-content|wp-includes|wordpress|jquery' --include='*.html' --include='*.css' --include='*.js' .; then
+            echo 'Legacy WordPress/jQuery reference detected.' >&2
+            exit 1
+          fi
+          node --check assets/js/site.js
+          node --check assets/js/theme-init.js
+
+      - name: Commit and publish to main
+        working-directory: site
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Alex Pavlenko Site Deployment'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git status --short
+          git commit -m 'Launch clean static Alex Pavlenko gallery website'
+          git push origin HEAD:main
