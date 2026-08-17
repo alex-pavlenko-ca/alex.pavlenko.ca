@@ -1,5 +1,6 @@
 name: Launch clean static Alex Pavlenko site
 
+# Deployment trigger: workflow registered before this guarded launch commit.
 on:
   push:
     branches:
