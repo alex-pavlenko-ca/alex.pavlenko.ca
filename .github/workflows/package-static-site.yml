@@ -1,0 +1,29 @@
+name: Package static site
+
+on:
+  push:
+    branches:
+      - modern-gallery-redesign-2026-08-17
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out redesign branch
+        uses: actions/checkout@v4
+
+      - name: Create deployment archive
+        run: |
+          zip -r alex-pavlenko-modern-gallery.zip . \
+            -x '.git/*' '.github/workflows/*' 'alex-pavlenko-modern-gallery.zip'
+
+      - name: Upload deployment archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: alex-pavlenko-modern-gallery
+          path: alex-pavlenko-modern-gallery.zip
+          if-no-files-found: error
