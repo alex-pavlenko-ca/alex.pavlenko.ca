@@ -1,11 +1,3 @@
-# alex.pavlenko.ca
+# Alex Pavlenko
 
-Portfolio Website
-
-All Art work is Copywrite Alex Pavelnko.
-
-Contact me via Facebook.com if you are interested in purchasing a piece of Art.
-
-https://www.facebook.com/alex.pavlenko.31924
-
-Welcome to the website of Alex Pavlenko ~ Visionary Painter, Muralist, Sculptor, and Inventor
+Pure static HTML5, CSS3, and vanilla JavaScript portfolio for GitHub Pages.
